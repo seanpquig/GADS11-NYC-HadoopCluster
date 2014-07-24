@@ -38,16 +38,6 @@ class hdfs_client {
     require => Package['hadoop_2_9_9_9'],
   }
 
-  package { 'hadoop_2_9_9_9-lzo':
-    ensure => installed,
-    require => Package['hadoop_2_9_9_9'],
-  }
-
-  package { 'hadoop_2_9_9_9-lzo-native':
-    ensure => installed,
-    require => Package['hadoop_2_9_9_9'],
-  }
-
   package { 'hadoop_2_10_9_9':
     ensure => installed,
   }
@@ -58,16 +48,6 @@ class hdfs_client {
   }
 
   package { 'hadoop_2_10_9_9-client':
-    ensure => installed,
-    require => Package['hadoop_2_10_9_9'],
-  }
-
-  package { 'hadoop_2_10_9_9-lzo':
-    ensure => installed,
-    require => Package['hadoop_2_10_9_9'],
-  }
-
-  package { 'hadoop_2_10_9_9-lzo-native':
     ensure => installed,
     require => Package['hadoop_2_10_9_9'],
   }
@@ -98,10 +78,16 @@ class hdfs_client {
     require => Package['hadoop_2_9_9_9'],
   }
 
-  file {'/usr/lib/hadoop/lib/native/Linux-amd64-64/libsnappy.so':
+  file {'/usr/hdp/2.9.9.9/hadoop/lib/native/libsnappy.so':
     ensure => 'link',
     target => '/usr/lib64/libsnappy.so.1',
-    require => Package['hadoop_2_9_9_9-lzo-native'],
+    require => Package['hadoop_2_9_9_9'],
+  }
+
+  file {'/usr/hdp/2.10.9.9/hadoop/lib/native/libsnappy.so':
+    ensure => 'link',
+    target => '/usr/lib64/libsnappy.so.1',
+    require => Package['hadoop_2_10_9_9'],
   }
 
   file { "${conf_dir}/commons-logging.properties":
@@ -147,6 +133,34 @@ class hdfs_client {
   file { "${conf_dir}/log4j.properties":
     ensure => file,
     content => template('hdfs_client/log4j.erb'),
+  }
+
+  file { "/usr/hdp":
+    ensure => directory,
+  }
+
+  file { "/usr/hdp/current":
+    ensure => directory,
+  }
+
+  file { "/usr/hdp/current/zookeeper-client":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+
+  file { "/usr/hdp/current/hdfs-client":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+
+  file { "/usr/bin/hadoop":
+    ensure => link,
+    target => '/usr/hdp/current/hdfs-client/hadoop/bin/hadoop'
+  }
+
+  file { "/usr/bin/hdfs":
+    ensure => link,
+    target => '/usr/hdp/current/hdfs-client/hadoop-hdfs/bin/hdfs'
   }
 
   if $security == "true" {

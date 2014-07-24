@@ -39,6 +39,16 @@ class yarn_node_manager {
     Package['hadoop-yarn-nodemanager']
   }
 
+  file { "/usr/hdp/current/hadoop-yarn-nodemanager":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+  ->
+  file { "/etc/rc.d/init.d/hadoop-yarn-nodemanager":
+    ensure => link,
+    target => '/usr/hdp/current/hadoop-yarn-nodemanager/etc/rc.d/init.d/hadoop-yarn-nodemanager'
+  }
+  ->
   package { "hadoop_2_9_9_9-yarn-nodemanager" :
     ensure => installed,
   }

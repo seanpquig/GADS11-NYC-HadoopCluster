@@ -31,6 +31,16 @@ class hdfs_datanode {
     Package['hadoop-hdfs-datanode']
   }
 
+  file { "/usr/hdp/current/hadoop-hdfs-datanode":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+  ->
+  file { "/etc/rc.d/init.d/hadoop-hdfs-datanode":
+    ensure => link,
+    target => '/usr/hdp/current/hadoop-hdfs-datanode/etc/rc.d/init.d/hadoop-hdfs-datanode'
+  }
+  ->
   package { "hadoop_2_9_9_9-hdfs-datanode" :
     ensure => installed,
   }

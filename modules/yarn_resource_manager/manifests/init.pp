@@ -41,6 +41,16 @@ class yarn_resource_manager {
     Package['hadoop_2_9_9_9-yarn-resourcemanager']
   }
 
+  file { "/usr/hdp/current/hadoop-yarn-resourcemanager":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+  ->
+  file { "/etc/rc.d/init.d/hadoop-yarn-resourcemanager":
+    ensure => link,
+    target => '/usr/hdp/current/hadoop-yarn-resourcemanager/etc/rc.d/init.d/hadoop-yarn-resourcemanager'
+  }
+  ->
   package { "hadoop_2_9_9_9-yarn-resourcemanager" :
     ensure => installed,
   }
@@ -54,6 +64,16 @@ class yarn_resource_manager {
     enable => true,
   }
 
+  file { "/usr/hdp/current/hadoop-mapreduce-historyserver":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+  ->
+  file { "/etc/rc.d/init.d/hadoop-mapreduce-historyserver":
+    ensure => link,
+    target => '/usr/hdp/current/hadoop-mapreduce-historyserver/etc/rc.d/init.d/hadoop-mapreduce-historyserver'
+  }
+  ->
   package { "hadoop_2_9_9_9-mapreduce-historyserver" :
     ensure => installed,
   }

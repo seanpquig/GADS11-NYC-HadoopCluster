@@ -23,6 +23,12 @@ class yarn_client {
   package { 'hadoop_2_9_9_9-yarn':
     ensure => installed,
   }
+  ->
+  file { '/usr/hdp/2.9.9.9/hadoop-yarn/sbin/yarn-daemon.sh':
+    ensure => file,
+    mode => 755,
+    source => 'puppet:///files/patches/yarn-daemon.sh',
+  }
 
   package { 'hadoop_2_9_9_9-mapreduce':
     ensure => installed,
@@ -30,6 +36,12 @@ class yarn_client {
 
   package { 'hadoop_2_10_9_9-yarn':
     ensure => installed,
+  }
+  ->
+  file { '/usr/hdp/2.10.9.9/hadoop-yarn/sbin/yarn-daemon.sh':
+    ensure => file,
+    mode => 755,
+    source => 'puppet:///files/patches/yarn-daemon.sh',
   }
 
   package { 'hadoop_2_10_9_9-mapreduce':
@@ -69,5 +81,20 @@ class yarn_client {
   file { "${hdfs_client::conf_dir}/yarn-site.xml":
     ensure => file,
     content => template('yarn_client/yarn-site.erb'),
+  }
+
+  file { "/usr/hdp/current/yarn-client":
+    ensure => link,
+    target => '/usr/hdp/2.9.9.9'
+  }
+
+  file { "/usr/bin/mapred":
+    ensure => link,
+    target => '/usr/hdp/current/yarn-client/hadoop-mapred/bin/mapred'
+  }
+
+  file { "/usr/bin/yarn":
+    ensure => link,
+    target => '/usr/hdp/current/yarn-client/hadoop-yarn/bin/yarn'
   }
 }
