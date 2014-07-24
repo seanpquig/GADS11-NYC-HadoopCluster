@@ -1,0 +1,106 @@
+#!/usr/bin/ruby
+
+require 'optparse'
+
+$root = "/usr/hdp"
+$current = $root + "/current"
+
+$leaves = ["hdfs-client",
+           "hadoop-hdfs-namenode",
+           "hadoop-hdfs-datanode",
+           "hadoop-mapreduce-historyserver",
+           "yarn-client",
+           "hadoop-yarn-resourcemanager",
+           "hadoop-yarn-nodemanager",
+           "zookeeper-client",
+           "zookeeper-server"]
+
+$aliases = {"hdfs"=> ["hdfs-client", "hadoop-hdfs-namenode", 
+                      "hadoop-hdfs-datanode"],
+            "yarn"=> ["yarn-client", "hadoop-yarn-resourcemanager",
+                      "hadoop-yarn-nodemanager", 
+                      "hadoop-mapreduce-historyserver"],
+            "zookeeper"=> ["zookeeper-client", "zookeeper-server"],
+            "all"=> $leaves}
+
+opt_parser = OptionParser.new do |opt|
+  opt.banner = "Usage: hdp-select COMMAND [OPTIONS]"
+  opt.separator  ""
+  opt.separator  "Commands"
+  opt.separator  "     set <package> <version>: set the package to version"
+  opt.separator  "     status <package>: show the version of package"
+  opt.separator  ""
+  opt.separator  "Options"
+
+  opt.on("-h","--help","help") do
+    puts opt_parser
+  end
+end
+
+opt_parser.parse!
+
+def getPackages(name) 
+  if not name
+    name = "all"
+  end
+  if $leaves.include? name 
+    return name
+  end
+  if $aliases.has_key? name 
+    return $aliases[name] 
+  end
+  puts "ERROR: Invalid package - %s" % [name]
+  puts "Pick one of:"
+  $aliases.each do |key, value|
+    puts key
+  end
+  $leaves.each do |key|
+    puts key
+  end
+  raise "Error: invalid package"
+end
+
+def listPackages(packages)
+  packages.sort.each do |pkg|
+    linkname = $current + "/" + pkg
+    if File.directory?(linkname)
+      puts "#{pkg} - #{File.basename(File.readlink(linkname))}"
+    else
+      puts "#{pkg} - None"
+    end
+  end
+end
+
+def setPackages(packages, version)
+  if not version 
+    puts "Usage: hdp-select set <package> <version>"
+    raise "Invalid version"
+  end
+  target = $root + "/" + version
+  if not File.directory?(target)
+    puts "Invalid version " + version
+    puts "Valid choices:"
+    Dir.entries($root).each do |name|
+      if not [".", "..", "current"].include? name
+        puts name
+      end
+    end
+    raise "Invalid version"
+  end
+  packages.sort.each do |pkg|
+    linkname = $current + "/" + pkg
+    if File.directory?(linkname)
+      File.delete(linkname)
+    end
+    File.symlink(target, linkname)
+  end
+end
+
+case ARGV[0]
+when "set"
+  setPackages(getPackages(ARGV[1]), ARGV[2])
+when "status"
+  listPackages(getPackages(ARGV[1]))
+else
+  puts opt_parser
+end

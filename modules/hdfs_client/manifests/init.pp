@@ -24,6 +24,10 @@ class hdfs_client {
   $pid_dir="/var/run/pid"
   $keytab_dir="/etc/security/hadoop"
 
+  package { 'pdsh':
+    ensure => installed,
+  }
+
   package { 'hadoop_2_9_9_9':
     ensure => installed,
   }
@@ -161,6 +165,12 @@ class hdfs_client {
   file { "/usr/bin/hdfs":
     ensure => link,
     target => '/usr/hdp/current/hdfs-client/hadoop-hdfs/bin/hdfs'
+  }
+
+  file { "/usr/bin/hdp-select":
+    ensure => file,
+    mode => 755,
+    source => 'puppet:///files/patches/hdp-select',
   }
 
   if $security == "true" {
