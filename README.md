@@ -29,12 +29,10 @@ Explore HDFS.
     hdfs dfs -ls /  
     hdfs dfs -ls /user/vagrant
 
+Copy files from client node into HDFS. 
 
-Copy file from client node into HDFS.  
-```hdfs dfs -copyFromLocal grep_errors.log words.txt```
-
-Confirm files ended up in HDFS.  
-```hdfs dfs -ls /user/vagrant```
+    hdfs dfs -copyFromLocal grep_errors.log words.txt
+    hdfs dfs -ls /user/vagrant
 
 Use fsck command.  
 ```hdfs fsck /user/vagrant/grep_errors.log```
