@@ -31,10 +31,15 @@ Explore HDFS.
 
 Copy files from client node into HDFS. 
 
-    hdfs dfs -copyFromLocal grep_errors.log words.txt
+    hdfs dfs -copyFromLocal grep_errors.log
+    hdfs dfs -copyFromLocal grep.py
+    hdfs dfs -copyFromLocal shakespeare.txt
+    hdfs dfs -copyFromLocal wordcounter.py
     hdfs dfs -ls /user/vagrant
 
-Use fsck command.  
-```hdfs fsck /user/vagrant/grep_errors.log```
+Use fsck command for insight into how file is stored in HDFS.
+
+    hdfs fsck /user/vagrant/grep_errors.log
+    hdfs fsck /user/vagrant/shakespeare.txt
 
 
