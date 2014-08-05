@@ -22,8 +22,8 @@ Go to lab folder.
 ```cd /vagrant/lab```
 
 Explore HDFS.
-```hdfs dfs -ls /```
-```hdfs dfs /user/vagrant
+```hdfs dfs -ls /  
+hdfs dfs /user/vagrant
 ```
 
 Copy file from client node into HDFS.
