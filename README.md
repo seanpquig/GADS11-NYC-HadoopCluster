@@ -24,10 +24,16 @@ Go to lab folder.
 Explore HDFS.
 
     hdfs dfs -ls /  
-    hdfs dfs /user/vagrant
+    hdfs dfs -ls /user/vagrant
 
 
 Copy file from client node into HDFS.  
 ```hdfs dfs -copyFromLocal grep_errors.log words.txt```
+
+Confirm files ended up in HDFS.
+```hdfs dfs -ls /user/vagrant```
+
+Use fsck command.
+```hdfs fsck /user/vagrant/grep_errors.log```
 
 
