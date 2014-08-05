@@ -34,9 +34,9 @@ Copy files from client node into HDFS.
     hdfs dfs -copyFromLocal wordcounter.py
     hdfs dfs -mkdir input_wc
     hdfs dfs -copyFromLocal shakespeare.txt input_wc/shakespeare.txt
-    hdfs dfs -copyFromLocal grep.py
     hdfs dfs -mkdir input_grep
     hdfs dfs -copyFromLocal grep_errors.log input_grep/grep_errors.log
+    hdfs dfs -ls
     
     
 
@@ -56,18 +56,35 @@ Let's expolore our data and Python script first
     wc shakespeare.txt
     less wordcounter.py
 
-Go to where the MapReduce JAR's live.  This is the standard format of MR programs (Java).
+Let's look at some JAR's.  This is the standard format of MR programs (Java).
 
     ll /usr/lib/hadoop-mapreduce/
-    hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar
+    hadoop jar /usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar
 
 Let's run a MapReduce job!!
 
     hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -files "wordcounter.py" -mapper "python wordcounter.py map" -reducer "python wordcounter.py reduce" -input "input_wc" -output "output_wc"
 
+Look at the output.
+    
+    hdfs dfs -ls output_wc
+    hdfs dfs -copyToLocal output_wc/part-00000 word_counts.txt
+    wc word_counts.txt
+    less word_counts.txt
 
+### Distributed grep Lab
 
-### Distributed grep example
+Write a MR job that looks through the grep_errors.log file and only outputs ERROR lines.  When you've finished your script, copy it into HDFS.
+    
+    hdfs dfs -copyFromLocal grep.py
+
+Then run with something like this:
+
+    hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -files "grep.py" -mapper "python grep.py map" -reducer "python grep.py reduce" -input "input_grep" -output "output_grep"
+
+If you have to rerun and get "folder already exist errors", you probably need this:
+
+    hdfs dfs -rm -r output_grep
 
 
 

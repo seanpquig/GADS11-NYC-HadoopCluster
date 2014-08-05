@@ -28,25 +28,15 @@ import sys
 import re
 import __builtin__
 
-delimiter = '¤'
+delimiter = ','
 
 def emit(key, value):
   print delimiter.join( (key, value) )
 
 def run_map():
-  for i, line in enumerate(sys.stdin):
-    line = line.rstrip()
-    # Set up key to maintain line order
-    i = str(i)
-    pad = "0000000000"
-    key = pad[0:len(pad)-len(i)] + i
+  for line in enumerate(sys.stdin):
+    ### Find and only emit lines that are ERRORs
 
-    # Regex replace sensitive data
-    match = "Incorrect credit card number format, '.*'"
-    repl = "Incorrect credit card number format, 'XXXX'"
-    if re.compile(match).search(line):
-      line = re.sub(match, repl, line)
-      
     emit(key, line)
     
 def run_reduce():
