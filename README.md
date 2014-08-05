@@ -13,8 +13,7 @@ This project uses Vagrant to provision a 5 node virtual Hadoop cluster.
 
 ## Basic HDFS usage
 Confirm your Vagrant cluster is running.  
-
-    vagrant status
+```vagrant status```
 
 Log into the gateway client node.  
 ```vagrant ssh gw```
