@@ -30,16 +30,44 @@ Explore HDFS.
     hdfs dfs -ls /user/vagrant
 
 Copy files from client node into HDFS. 
-
-    hdfs dfs -copyFromLocal grep_errors.log
-    hdfs dfs -copyFromLocal grep.py
-    hdfs dfs -copyFromLocal shakespeare.txt
+    
     hdfs dfs -copyFromLocal wordcounter.py
-    hdfs dfs -ls /user/vagrant
+    hdfs dfs -mkdir input_wc
+    hdfs dfs -copyFromLocal shakespeare.txt input_wc/shakespeare.txt
+    hdfs dfs -copyFromLocal grep.py
+    hdfs dfs -mkdir input_grep
+    hdfs dfs -copyFromLocal grep_errors.log input_grep/grep_errors.log
+    
+    
 
 Use fsck command for insight into how file is stored in HDFS.
 
-    hdfs fsck /user/vagrant/grep_errors.log
-    hdfs fsck /user/vagrant/shakespeare.txt
+    hdfs fsck /user/vagrant/input_wc/shakespeare.txt
+    hdfs fsck /user/vagrant/input_grep/grep_errors.log
+
+
+## Streaming MapReduce with Python
+
+### Word count example (the hello world of MapReduce)
+
+Let's expolore our data and Python script first
+
+    less shakespeare.txt
+    wc shakespeare.txt
+    less wordcounter.py
+
+Go to where the MapReduce JAR's live.  This is the standard format of MR programs (Java).
+
+    ll /usr/lib/hadoop-mapreduce/
+    hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar
+
+Let's run a MapReduce job!!
+
+    hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -files "wordcounter.py" -mapper "python wordcounter.py map" -reducer "python wordcounter.py reduce" -input "input_wc" -output "output_wc"
+
+
+
+### Distributed grep example
+
 
 
