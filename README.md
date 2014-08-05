@@ -19,10 +19,13 @@ Log into the gateway client node.
 ```vagrant ssh gw```
 
 Go to lab folder.  
-```cd /vagrant/lab```
+    
+    cd /vagrant/lab
+    ls
 
 Explore HDFS.
 
+    hadoop fs -ls /
     hdfs dfs -ls /  
     hdfs dfs -ls /user/vagrant
 
@@ -30,10 +33,10 @@ Explore HDFS.
 Copy file from client node into HDFS.  
 ```hdfs dfs -copyFromLocal grep_errors.log words.txt```
 
-Confirm files ended up in HDFS.
+Confirm files ended up in HDFS.  
 ```hdfs dfs -ls /user/vagrant```
 
-Use fsck command.
+Use fsck command.  
 ```hdfs fsck /user/vagrant/grep_errors.log```
 
 
