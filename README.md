@@ -11,19 +11,19 @@ This project uses Vagrant to provision a 5 node virtual Hadoop cluster.
 * Open the root project folder and run "vagrant up"
 
 
-## Basic usage HDFS usage
-Confirm your Vagrant cluster is running.
+## Basic HDFS usage
+Confirm your Vagrant cluster is running.  
 ```vagrant status```
 
-Log into the gateway client node.
+Log into the gateway client node.  
 ```vagrant ssh gw```
 
-Go to lab folder.
+Go to lab folder.  
 ```cd /vagrant/lab```
 
 Explore HDFS.
-```hdfs dfs -ls /
-hdfs dfs /user/vagrant
+```hdfs dfs -ls /```
+```hdfs dfs /user/vagrant
 ```
 
 Copy file from client node into HDFS.
