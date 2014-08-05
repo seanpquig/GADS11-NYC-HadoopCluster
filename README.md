@@ -1,5 +1,7 @@
-# Structor
+# GADS11-NYC-HadoopCluster
 =======
+
+This project uses Vagrant to provision a 5 node virtual Hadoop cluster.
 
 Vagrant files for creating virtual multi-node Hadoop clusters on various OSes,
 both with and without security.
