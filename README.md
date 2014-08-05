@@ -27,7 +27,7 @@ Explore HDFS.
     hdfs dfs /user/vagrant
 
 
-Copy file from client node into HDFS. 
+Copy file from client node into HDFS.  
 ```hdfs dfs -copyFromLocal grep_errors.log words.txt```
 
 
